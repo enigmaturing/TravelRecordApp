@@ -10,7 +10,9 @@ namespace TravelRecordApp
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            // Adding new NavigationPage() so that we can navigate to other pages having
+            // the back arrow on the top, by calling await Navigation.PushAsync() from the MainPage.xaml.cs
+            MainPage = new NavigationPage(new MainPage());
         }
 
         protected override void OnStart()
