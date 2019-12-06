@@ -6,6 +6,10 @@
              mc:Ignorable="d"
              x:Class="TravelRecordApp.App">
     <Application.Resources>
-
+        
+        <ResourceDictionary>
+            <Color x:Key="mainColor">#1E90FF</Color>
+        </ResourceDictionary>
+        
     </Application.Resources>
 </Application>

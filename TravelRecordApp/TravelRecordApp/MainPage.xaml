@@ -9,13 +9,15 @@
     <StackLayout VerticalOptions="Center"
                  Margin="15">
         <Entry x:Name="emailEntry"
+               TextColor="{StaticResource mainColor}"
                Placeholder="Email address"
                Keyboard="Email"/>
         <Entry x:Name="passwordEntry"
+               TextColor="{StaticResource mainColor}"
                Placeholder="Password"
                IsPassword="True"/>
         <Button x:Name="loginButton"
-                BackgroundColor="DodgerBlue"
+                BackgroundColor="{StaticResource mainColor}"
                 TextColor="White"
                 FontSize="25"
                 Text="Log in"
