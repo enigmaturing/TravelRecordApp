@@ -12,7 +12,7 @@
             <Color x:Key="buttonMainTextColor">#FFFFFF</Color>
         </ResourceDictionary>
 
-        <Style TargetType="Button">
+        <Style x:Key="mainButton" TargetType="Button">
             <Setter Property="BackgroundColor" Value="{StaticResource mainColor}"></Setter>
             <Setter Property="TextColor" Value="{StaticResource buttonMainTextColor}"></Setter>
         </Style>

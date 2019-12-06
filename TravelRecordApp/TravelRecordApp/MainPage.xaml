@@ -20,6 +20,7 @@
                 FontSize="25"
                 Text="Log in"
                 Margin="0,50,0,0"
+                Style="{StaticResource mainButton}"
                 Clicked="loginButton_Clicked"/>
     </StackLayout>
     
