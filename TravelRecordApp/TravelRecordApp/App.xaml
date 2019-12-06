@@ -10,11 +10,15 @@
         <ResourceDictionary>
             <Color x:Key="mainColor">#1E90FF</Color>
             <Color x:Key="buttonMainTextColor">#FFFFFF</Color>
+            <Color x:Key="buttonSecondaryTextColor">#FF0000</Color>
         </ResourceDictionary>
 
         <Style x:Key="mainButton" TargetType="Button">
             <Setter Property="BackgroundColor" Value="{StaticResource mainColor}"></Setter>
             <Setter Property="TextColor" Value="{StaticResource buttonMainTextColor}"></Setter>
+        </Style>
+        <Style x:Key="secondaryButton" TargetType="Button" BasedOn="{StaticResource mainButton}">
+            <Setter Property="BackgroundColor" Value="{StaticResource buttonSecondaryTextColor}"></Setter>
         </Style>
         
     </Application.Resources>

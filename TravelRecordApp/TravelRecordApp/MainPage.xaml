@@ -22,6 +22,10 @@
                 Margin="0,50,0,0"
                 Style="{StaticResource mainButton}"
                 Clicked="loginButton_Clicked"/>
+        <Button x:Name="cancelSubscriptionButton"
+                FontSize="15"
+                Text="Cancel subscription"
+                Style="{StaticResource secondaryButton}"/>
     </StackLayout>
     
 </ContentPage>
