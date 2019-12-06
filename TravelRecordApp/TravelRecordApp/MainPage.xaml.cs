@@ -17,5 +17,13 @@ namespace TravelRecordApp
         {
             InitializeComponent();
         }
+
+        private async void loginButton_Clicked(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(emailEntry.Text) || string.IsNullOrEmpty(passwordEntry.Text))
+                await DisplayAlert("Alert", "Introduce your email and password, please", "cancel");
+
+
+        }
     }
 }
