@@ -25,7 +25,10 @@
         <Button x:Name="cancelSubscriptionButton"
                 FontSize="15"
                 Text="Cancel subscription"
-                Style="{StaticResource secondaryButton}"/>
+                Style="{StaticResource secondaryButton}"
+                Clicked="cancelSubscriptionButton_Clicked"/>
+        <Label x:Name="resultCancelSusbscriptionLabel"
+               FontSize="20"/>
     </StackLayout>
     
 </ContentPage>
