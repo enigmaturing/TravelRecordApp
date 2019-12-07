@@ -6,6 +6,8 @@ namespace TravelRecordApp
 {
     public partial class App : Application
     {
+        public static string DatabaseLocation = string.Empty;
+
         public App()
         {
             InitializeComponent();
@@ -13,6 +15,15 @@ namespace TravelRecordApp
             // Adding new NavigationPage() so that we can navigate to other pages having
             // the back arrow on the top, by calling await Navigation.PushAsync() from the MainPage.xaml.cs
             MainPage = new NavigationPage(new MainPage());
+        }
+
+        // The next constructor states the locastion of the local database for our app
+        public App(string databaseLocation)
+        {
+            InitializeComponent();
+            MainPage = new NavigationPage(new MainPage());
+
+            DatabaseLocation = databaseLocation;
         }
 
         protected override void OnStart()
