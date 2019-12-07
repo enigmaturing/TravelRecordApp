@@ -5,11 +5,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="TravelRecordApp.HistoryPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to HistoryPage!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+    <ListView x:Name="postListView">
+        <!-- 2step to apply data binding: Set the actual binding to a property of the source (in this case, that property is Expierence) -->
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <TextCell Text="{Binding Expierience}" />
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
 </ContentPage>

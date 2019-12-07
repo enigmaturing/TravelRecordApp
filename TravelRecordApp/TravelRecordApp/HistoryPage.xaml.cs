@@ -26,6 +26,11 @@ namespace TravelRecordApp
             {
                 conn.CreateTable<Post>();
                 var posts = conn.Table<Post>().ToList();
+
+                // First step to implement databinding:
+                // Establish the source of the binding (in this case, we do this from the .cs)
+                // Here the source is the list of posts retrieved from the DB:
+                postListView.ItemsSource = posts;
             };
         }
     }
