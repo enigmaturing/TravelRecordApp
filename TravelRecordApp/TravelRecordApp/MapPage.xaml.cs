@@ -1,4 +1,5 @@
-﻿using Plugin.Permissions;
+﻿using Plugin.Geolocator;
+using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace TravelRecordApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MapPage : ContentPage
     {
+        private bool hasLocationPermission = false;
+
         public MapPage()
         {
             InitializeComponent();
@@ -23,26 +26,64 @@ namespace TravelRecordApp
             GetPermissions();
         }
 
-        protected async override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            // Show or hide button "locate user" depending on the actual status of permission
-            // This has to be done each time the MapPage appears,to refresh the visibility of
-            // the user, just in case he/she has changed its mind since last choice on the app
-            var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.LocationWhenInUse);
-            if (status == PermissionStatus.Granted)
+            if (hasLocationPermission)
             {
-                locationMap.IsShowingUser = true;
+                // Si tenemos persmisos de posición, creamos un locator de la posición actual,
+                // creamos un event handler que se llame cuando la posición cambia
+                // y comenzamos a escuchar cambios en la posición sin intervalo de tiempo, cuando
+                // el cambio sea mayor a 100 metros
+                var locator = CrossGeolocator.Current;
+                locator.PositionChanged += Locator_PositionChanged;
+                await locator.StartListeningAsync(TimeSpan.Zero, 100);
+            }
+
+            GetLocation();
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            // Cuando salimos del mapa, parar de escuchar la posición
+            // y eliminamos la subscripción al evento que se llama cuando cambia la posición
+            CrossGeolocator.Current.StopListeningAsync();
+            CrossGeolocator.Current.PositionChanged -= Locator_PositionChanged;
+        }
+
+        private void Locator_PositionChanged(object sender, Plugin.Geolocator.Abstractions.PositionEventArgs e)
+        {
+            MoveMap(e.Position);
+        }
+
+        // El método MoveMap() centra el mapa en la posción que le pasemos: puede ser la del usuario actualmente
+        // ó una posición general (madrid), en caso de que el usuario no haya dado permisos.
+        private void MoveMap(Plugin.Geolocator.Abstractions.Position position)
+        {
+            var mapCenter = new Position(position.Latitude, position.Longitude);
+            var mapSpan = new MapSpan(mapCenter, 0.01, 0.01);
+            locationMap.MoveToRegion(mapSpan);
+        }
+
+        private async void GetLocation()
+        {
+            if (hasLocationPermission)
+            {
+                var locator = CrossGeolocator.Current;
+                var position = await locator.GetPositionAsync();  // Posición actual del usuario
+
+                MoveMap(position);
             }
             else
             {
-                // Hide user location and center map on Madrid, with a radius of 1000km
-                locationMap.IsShowingUser = false;
-                Position madridCoordinates = new Position(40.4165, -3.70256);
-                locationMap.MoveToRegion(MapSpan.FromCenterAndRadius(madridCoordinates, new Distance(1000000d)));
+                var mapCenter = new Position(40.4165, -3.70256);  // Madrid
+                var mapSpan = new MapSpan(mapCenter, 15, 15);
+
+                locationMap.MoveToRegion(mapSpan);
             }
-            
         }
 
         private async void GetPermissions()
@@ -67,6 +108,9 @@ namespace TravelRecordApp
                 if (status == PermissionStatus.Granted)
                 {
                     locationMap.IsShowingUser = true;
+                    hasLocationPermission = true;
+
+                    GetLocation();
                 }
                 else
                 {
@@ -77,7 +121,7 @@ namespace TravelRecordApp
             {
                 await DisplayAlert("Error", ex.Message, "Ok");
             }
-            
+
         }
     }
 }
