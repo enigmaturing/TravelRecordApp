@@ -23,6 +23,7 @@ namespace TravelRecordApp.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             Xamarin.FormsMaps.Init(this, savedInstanceState);
+            Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
             // IMPORTANT: Defining a path to a resource in a system in a clever way
             string dbName = "travel_db.sqlite";
