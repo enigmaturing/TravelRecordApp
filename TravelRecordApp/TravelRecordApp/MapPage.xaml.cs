@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
 
 namespace TravelRecordApp
@@ -36,7 +37,10 @@ namespace TravelRecordApp
             }
             else
             {
+                // Hide user location and center map on Madrid, with a radius of 1000km
                 locationMap.IsShowingUser = false;
+                Position madridCoordinates = new Position(40.4165, -3.70256);
+                locationMap.MoveToRegion(MapSpan.FromCenterAndRadius(madridCoordinates, new Distance(1000000d)));
             }
             
         }
