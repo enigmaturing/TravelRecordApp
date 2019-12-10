@@ -13,7 +13,7 @@ namespace TravelRecordApp.Logic
         {
             List<Venue> venues = new List<Venue>();
 
-            var url = Venue.GenerateURL(latitude, longitude);
+            var url = VenueRoot.GenerateURL(latitude, longitude);
 
             using (HttpClient client = new HttpClient())
             {
