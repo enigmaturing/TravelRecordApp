@@ -34,20 +34,40 @@ namespace TravelRecordApp
 
         private void ToolbarItem_Clicked(object sender, EventArgs e)
         {
-            Post post = new Post()
+            try
             {
-                Expierience = expierenceEntry.Text
-            };
+                var selectedVenue = venueListView.SelectedItem as Venue;  // We can do the cast to Venue because the source of the veueListView is set to venues, which is a List of venues
+                var firstCategory = selectedVenue.categories.FirstOrDefault();
 
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+                Post post = new Post()
+                {
+                    Expierience = expierenceEntry.Text,
+                    CategoryId = firstCategory.id,
+                    CategoryName = firstCategory.name,
+                    Address = selectedVenue.location.address,
+                    Latitude = selectedVenue.location.lat,
+                    Longitude = selectedVenue.location.lng,
+                    VenueName = selectedVenue.name
+                };
+
+                using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+                {
+                    conn.CreateTable<Post>();
+                    int rows = conn.Insert(post);
+
+                    if (rows > 0)
+                        DisplayAlert("Success", "Expiereince sucessfully inserted", "Great!");
+                    else
+                        DisplayAlert("Failure", "Expiereince failed to be inserted", "OK");
+                }
+            } 
+            catch (NullReferenceException nre)
             {
-                conn.CreateTable<Post>();
-                int rows = conn.Insert(post);
 
-                if (rows > 0)
-                    DisplayAlert("Success", "Expiereince sucessfully inserted", "Great!");
-                else
-                    DisplayAlert("Failure", "Expiereince failed to be inserted", "OK");
+            }
+            catch (Exception ex)
+            {
+             
             }
         }
     }
