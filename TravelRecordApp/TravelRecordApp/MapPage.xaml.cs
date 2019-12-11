@@ -79,7 +79,12 @@ namespace TravelRecordApp
             base.OnDisappearing();
 
             // Cuando salimos del mapa, parar de escuchar la posición
-            // y eliminamos la subscripción al evento que se llama cuando cambia la posición
+            // y eliminamos la subscripción al evento que se llama cuando cambia la posición:
+            // THESE NEXT TWO LINES ARE VERY IMPORTANT TO PREVENT A RUNTIME ERROR otherwise
+            // we would go out of the mapview withouth stoping listening to the position of
+            // the gps (which does not cause any error), but when we come back an the onAppearin()
+            // method is run again, the current position will be started to be listened again
+            // and THAT would cause a runtime error, if we are already listening to it
             CrossGeolocator.Current.StopListeningAsync();
             CrossGeolocator.Current.PositionChanged -= Locator_PositionChanged;
         }
