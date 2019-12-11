@@ -6,14 +6,45 @@
              mc:Ignorable="d"
              x:Class="TravelRecordApp.NewTravelPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Save" Clicked="ToolbarItem_Clicked"/>
+        <ToolbarItem Text="Save"
+                     Clicked="ToolbarItem_Clicked" />
     </ContentPage.ToolbarItems>
-    
+
     <ContentPage.Content>
         <StackLayout>
             <Entry x:Name="expierenceEntry"
                    Placeholder="Write your expierence" />
+
+            <ListView x:Name="venueListView"
+                      Margin="10, 0"
+                      HorizontalOptions="FillAndExpand"
+                      HasUnevenRows="True"> <!--By setting HasUnevenRows to true, we can thaen apply Maring to the grid contained in the Viewcell-->
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Margin="0,10,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <Label Text="{Binding name}"
+                                       FontAttributes="Bold"/>
+                                <Label Grid.Row="1"
+                                       Text="{Binding location.address}"
+                                       TextColor="DodgerBlue"/>
+                                <Label Grid.Column="1"
+                                       Text="{Binding location.distance, StringFormat='{0} meters'}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
-        
+
     </ContentPage.Content>
 </ContentPage>
