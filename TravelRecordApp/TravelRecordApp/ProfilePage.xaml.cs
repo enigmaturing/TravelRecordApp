@@ -28,9 +28,14 @@ namespace TravelRecordApp
                 var postTable = conn.Table<Post>().ToList(); // The ToList() method is LINQ
 
                 // with linq, retrieve a list of posts ordered by category selecting only categories that are different (do not repeat them. That is what Distinct() does)
+                // 1st LINQ-Syntax:
+                /*
                 var categories = (from p in postTable
                                   orderby p.CategoryId
                                   select p.CategoryName).Distinct().ToList();
+                */
+                // 2nd LINQ-Syntax:
+                var categories = postTable.OrderBy(p => p.CategoryId).Select(p => p.CategoryName).Distinct().ToList();
 
 
                 // Store in a dictionary called categoriesCountDictionary the count of posts in each category
@@ -40,9 +45,15 @@ namespace TravelRecordApp
                 foreach (var category in categories)
                 {
                     // With LINQ, retrieve the count of posts, where the category is a given one (defined by the loop)
+                    // 1st LINQ-Syntax:
+                    /*
                     var count = (from post in postTable
                                  where post.CategoryName == category
                                  select post).ToList().Count();
+                    */
+
+                    // 2nd LINQ-Syntax:
+                    var count = postTable.Where(p => p.CategoryName == category).ToList().Count();
 
                     try
                     {
