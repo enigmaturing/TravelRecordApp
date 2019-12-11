@@ -18,9 +18,8 @@
             <ListView x:Name="categoriesListView">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
-
-                        </ViewCell>
+                        <TextCell Text="{Binding Path=Key}"
+                                  Detail="{Binding Path=Value}" />  <!-- So we bind text to the key of the dictionar set as SourceItem in the .csy-->
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
