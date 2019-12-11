@@ -6,7 +6,6 @@ using TravelRecordApp.Helpers;
 
 namespace TravelRecordApp.Model
 {
-
     public class Location
     {
         public string address { get; set; }
@@ -37,12 +36,17 @@ namespace TravelRecordApp.Model
         public string name { get; set; }
         public Location location { get; set; }
         public IList<Category> categories { get; set; }
-        public string referralId { get; set; }
-        public bool hasPerk { get; set; }
+    }
+
+    public class Response
+    {
+        public IList<Venue> venues { get; set; }
     }
 
     public class VenueRoot
     {
+        public Response response { get; set; }
+
         public static string GenerateURL(double latitue, double longitude)
         {
             return string.Format(Constants.VENUE_SEARCH, latitue.ToString(CultureInfo.InvariantCulture), longitude.ToString(CultureInfo.InvariantCulture), Constants.CLIENT_ID, Constants.CLIENT_SECTRET, DateTime.Now.ToString("yyyyMMdd"));
