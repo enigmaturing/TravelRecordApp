@@ -17,6 +17,11 @@ namespace TravelRecordApp
         public MainPage()
         {
             InitializeComponent();
+
+            // set the image source:
+            // VERY IMPORTANT! Right on the image -> Properties -> Build Action -> set as "Embedded Resources"
+            var assembly = typeof(MainPage);  // source assembly where xmaarin has to look for the image
+            iconImage.Source = ImageSource.FromResource("TravelRecordApp.Assets.Images.plane.png", assembly);
         }
 
         private async void loginButton_Clicked(object sender, EventArgs e)
