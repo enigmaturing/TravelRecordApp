@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TravelRecordApp.Model;
 using Xamarin.Forms;
 
 namespace TravelRecordApp
@@ -31,9 +32,27 @@ namespace TravelRecordApp
                 await DisplayAlert("Alert", "Introduce your email and password, please", "cancel");
                 return;
             }
-                
-            await Navigation.PushAsync(new HomePage());
+            else
+            {
+                // Look in the azure table "Users" for the user with an email address that matched to the one given by the user in the emailEntry of MainPage.xaml
+                var user = (await App.MobileService.GetTable<Users>().Where(u => u.Email == emailEntry.Text).ToListAsync()).FirstOrDefault();
 
+                if(user != null)
+                {
+                    if (user.Password == passwordEntry.Text)
+                    {
+                        await Navigation.PushAsync(new HomePage());
+                    }
+                    else
+                    {
+                        await DisplayAlert("Attention!", "Email or Password are not correct", "OK");
+                    }
+                }
+                else
+                {
+                    await DisplayAlert("Error", "User not found", "OK");
+                }
+            }
         }
 
         private async void cancelSubscriptionButton_Clicked(object sender, EventArgs e)
