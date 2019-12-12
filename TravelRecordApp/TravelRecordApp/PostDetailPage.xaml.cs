@@ -36,6 +36,7 @@ namespace TravelRecordApp
             {
                 await App.MobileService.GetTable<Post>().UpdateAsync(selectedPost);
                 await DisplayAlert("Success", "Expiereince sucessfully updated", "Great!");
+                await Navigation.PopAsync();
             }
             catch (Exception ex)
             {
@@ -62,6 +63,7 @@ namespace TravelRecordApp
             {
                 await App.MobileService.GetTable<Post>().DeleteAsync(selectedPost);
                 await DisplayAlert("Success", "Expiereince sucessfully deleted", "Great!");
+                await Navigation.PopAsync();
             }
             catch (Exception ex)
             {

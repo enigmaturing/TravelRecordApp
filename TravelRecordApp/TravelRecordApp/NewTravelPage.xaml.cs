@@ -67,6 +67,7 @@ namespace TravelRecordApp
                 // Insert the post into the azure db
                 await App.MobileService.GetTable<Post>().InsertAsync(post);
                 await DisplayAlert("Success", "Expiereince sucessfully inserted", "Great!");  // This line will only be executed AFTER the previous line is finished, because it is an async-method marked with await
+                await Navigation.PopAsync();
             } 
             catch (NullReferenceException nre)
             {
