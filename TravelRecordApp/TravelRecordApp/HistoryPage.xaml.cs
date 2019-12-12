@@ -18,10 +18,12 @@ namespace TravelRecordApp
             InitializeComponent();
         }
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             base.OnAppearing();
 
+            // SHOW POSTS STORED IN LOCAL-DB
+            /*
             using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
             {
                 conn.CreateTable<Post>();
@@ -32,6 +34,11 @@ namespace TravelRecordApp
                 // Here the source is the list of posts retrieved from the DB:
                 postListView.ItemsSource = posts;
             };
+            */
+
+            // SHOW POSTS STORED IN AZURE-DB
+            var posts = await App.MobileService.GetTable<Post>().Where(p => p.UserId == App.user.Id).ToListAsync();
+            postListView.ItemsSource = posts;
         }
 
         private async void PostListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
