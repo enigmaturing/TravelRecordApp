@@ -18,24 +18,24 @@ namespace TravelRecordApp
             InitializeComponent();
         }
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             base.OnAppearing();
 
-            
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation)) // retrieve the elements from the table posts
-            {
-                var postTable = conn.Table<Post>().ToList(); // The ToList() method is LINQ
+            //using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation)) // retrieve the elements from the table posts
+            //{
+            //var postTable = conn.Table<Post>().ToList(); // The ToList() method is LINQ
+            var postTable = await App.MobileService.GetTable<Post>().Where(p => p.UserId == App.user.Id).ToListAsync();
 
-                // with linq, retrieve a list of posts ordered by category selecting only categories that are different (do not repeat them. That is what Distinct() does)
-                // 1st LINQ-Syntax:
-                /*
-                var categories = (from p in postTable
-                                  orderby p.CategoryId
-                                  select p.CategoryName).Distinct().ToList();
-                */
-                // 2nd LINQ-Syntax:
-                var categories = postTable.OrderBy(p => p.CategoryId).Select(p => p.CategoryName).Distinct().ToList();
+            // with linq, retrieve a list of posts ordered by category selecting only categories that are different (do not repeat them. That is what Distinct() does)
+            // 1st LINQ-Syntax:
+            /*
+            var categories = (from p in postTable
+                              orderby p.CategoryId
+                              select p.CategoryName).Distinct().ToList();
+            */
+            // 2nd LINQ-Syntax:
+            var categories = postTable.OrderBy(p => p.CategoryId).Select(p => p.CategoryName).Distinct().ToList();
 
 
                 // Store in a dictionary called categoriesCountDictionary the count of posts in each category
@@ -68,7 +68,7 @@ namespace TravelRecordApp
                 categoriesListView.ItemsSource = categoriesCountDictionary;
 
                 postCountLabel.Text = postTable.Count.ToString();
-            }
+            //}
         }
     }
 }

@@ -44,6 +44,8 @@ namespace TravelRecordApp
 
             GetLocation();
 
+            // SHOW POSTS STORED IN LOCAL-DB
+            /*
             using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
             {
                 conn.CreateTable<Post>();
@@ -51,6 +53,11 @@ namespace TravelRecordApp
 
                 DisplayPinsInMap(posts);
             };
+            */
+
+            // SHOW POSTS STORED IN AZURE-DB
+            var posts = await App.MobileService.GetTable<Post>().Where(p => p.UserId == App.user.Id).ToListAsync();
+            DisplayPinsInMap(posts);
         }
 
         private void DisplayPinsInMap(List<Post> posts)
