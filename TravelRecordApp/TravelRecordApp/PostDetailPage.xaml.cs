@@ -42,8 +42,7 @@ namespace TravelRecordApp
             // Delete post from Azure-DB
             try
             {
-                var post = (await App.MobileService.GetTable<Post>().Where(p => p.Id == selectedPost.Id).ToListAsync()).FirstOrDefault<Post>();
-                await App.MobileService.GetTable<Post>().DeleteAsync(post);
+                await App.MobileService.GetTable<Post>().DeleteAsync(selectedPost);
                 await DisplayAlert("Success", "Expiereince sucessfully deleted", "Great!");
                 await Navigation.PushAsync(new HistoryPage());
             }
