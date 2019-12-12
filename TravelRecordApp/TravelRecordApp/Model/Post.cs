@@ -8,7 +8,7 @@ namespace TravelRecordApp.Model
     public class Post
     {
         [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [MaxLength(250)]
         public string Expierience { get; set; }
@@ -25,5 +25,8 @@ namespace TravelRecordApp.Model
 
         public double Longitude { get; set; }
 
+        public int Distance { get; set; }
+
+        public string UserId { get; set; }
     }
 }

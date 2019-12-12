@@ -41,6 +41,7 @@ namespace TravelRecordApp
                 {
                     if (user.Password == passwordEntry.Text)
                     {
+                        App.user = user;  // Wen the user has been authenticated, asign it to the instance created in App.xaml.cs, so that it can be shared between all ContentViews
                         await Navigation.PushAsync(new HomePage());
                     }
                     else

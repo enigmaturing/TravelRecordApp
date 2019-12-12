@@ -32,7 +32,7 @@ namespace TravelRecordApp
             venueListView.ItemsSource = venues;
         }
 
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
             try
             {
@@ -47,27 +47,34 @@ namespace TravelRecordApp
                     Address = selectedVenue.location.address,
                     Latitude = selectedVenue.location.lat,
                     Longitude = selectedVenue.location.lng,
-                    VenueName = selectedVenue.name
+                    VenueName = selectedVenue.name,
+                    Distance = selectedVenue.location.distance,
+                    UserId = App.user.Id
                 };
 
-                using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
-                {
-                    conn.CreateTable<Post>();
-                    int rows = conn.Insert(post);
+                // Insert the post into the local SQL DB
+                //using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+                //{
+                //    conn.CreateTable<Post>();
+                //    int rows = conn.Insert(post);
 
-                    if (rows > 0)
-                        DisplayAlert("Success", "Expiereince sucessfully inserted", "Great!");
-                    else
-                        DisplayAlert("Failure", "Expiereince failed to be inserted", "OK");
-                }
+                //    if (rows > 0)
+                //        DisplayAlert("Success", "Expiereince sucessfully inserted", "Great!");
+                //    else
+                //        DisplayAlert("Failure", "Expiereince failed to be inserted", "OK");
+                //}
+
+                // Insert the post into the azure db
+                await App.MobileService.GetTable<Post>().InsertAsync(post);
+                await DisplayAlert("Success", "Expiereince sucessfully inserted", "Great!");  // This line will only be executed AFTER the previous line is finished, because it is an async-method marked with await
             } 
             catch (NullReferenceException nre)
             {
-
+                await DisplayAlert("Failure", "Expiereince failed to be inserted", "OK");
             }
             catch (Exception ex)
             {
-             
+                await DisplayAlert("Failure", "Expiereince failed to be inserted", "OK");
             }
         }
     }
