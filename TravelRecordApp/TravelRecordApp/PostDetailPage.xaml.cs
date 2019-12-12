@@ -37,18 +37,32 @@ namespace TravelRecordApp
             }
         }
 
-        private void DeleteButton_Clicked(object sender, EventArgs e)
+        private async void DeleteButton_Clicked(object sender, EventArgs e)
         {
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+            // Delete post from Azure-DB
+            try
             {
-                conn.CreateTable<Post>();
-                int rows = conn.Delete(selectedPost);
-
-                if (rows > 0)
-                    DisplayAlert("Success", "Expiereince sucessfully deleted", "Great!");
-                else
-                    DisplayAlert("Failure", "Expiereince failed to be deleted", "OK");
+                var post = (await App.MobileService.GetTable<Post>().Where(p => p.Id == selectedPost.Id).ToListAsync()).FirstOrDefault<Post>();
+                await App.MobileService.GetTable<Post>().DeleteAsync(post);
+                await DisplayAlert("Success", "Expiereince sucessfully deleted", "Great!");
+                await Navigation.PushAsync(new HistoryPage());
             }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Failure", "Expiereince failed to be deleted", "OK");
+            }
+
+            // Delete post from Local-DB
+            //using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+            //{
+            //    conn.CreateTable<Post>();
+            //    int rows = conn.Delete(selectedPost);
+
+            //    if (rows > 0)
+            //        DisplayAlert("Success", "Expiereince sucessfully deleted", "Great!");
+            //    else
+            //        DisplayAlert("Failure", "Expiereince failed to be deleted", "OK");
+            //}
         }
     }
 }
