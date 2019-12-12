@@ -40,7 +40,7 @@ namespace TravelRecordApp
         {
             // Calling an async method (use async and await the result defining it as var)
             var result = await cancelSubscription();
-            resultCancelSusbscriptionLabel.Text = result;
+            //resultCancelSusbscriptionLabel.Text = result;
         }
 
         // Definition and implementation of an async method (use async Task<returnTpye>)
@@ -48,6 +48,11 @@ namespace TravelRecordApp
         {
             Thread.Sleep(2000);
             return "Cancelation succeded";
+        }
+
+        private void registerUserButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new RegisterPage());
         }
     }
 }

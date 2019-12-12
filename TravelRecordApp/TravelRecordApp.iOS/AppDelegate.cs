@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using Microsoft.WindowsAzure.MobileServices;
 using UIKit;
 
 namespace TravelRecordApp.iOS
@@ -24,6 +25,8 @@ namespace TravelRecordApp.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             Xamarin.FormsMaps.Init();
+            // Init azure services:
+            CurrentPlatform.Init();
 
             // IMPORTANT: Defining a path to a resource in a system in a clever way
             string dbName = "travel_db.sqlite";
