@@ -19,22 +19,40 @@ namespace TravelRecordApp
         {
             InitializeComponent();
             this.selectedPost = selectedPost;
+
+            expierienceEntry.Text = selectedPost.Expierience;
+            venueLabel.Text = selectedPost.VenueName;
+            categoryLabel.Text = selectedPost.CategoryName;
+            addressLabel.Text = selectedPost.Address;
+            distanceLabel.Text = $"{selectedPost.Distance.ToString()} m";
         }
 
-        private void UpdateButton_Clicked(object sender, EventArgs e)
+        private async void UpdateButton_Clicked(object sender, EventArgs e)
         {
             selectedPost.Expierience = expierienceEntry.Text;
 
-            using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+            // Update post from Azure-DB
+            try
             {
-                conn.CreateTable<Post>();
-                int rows = conn.Update(selectedPost);
-
-                if (rows > 0)
-                    DisplayAlert("Success", "Expiereince sucessfully updated", "Great!");
-                else
-                    DisplayAlert("Failure", "Expiereince failed to be updated", "OK");
+                await App.MobileService.GetTable<Post>().UpdateAsync(selectedPost);
+                await DisplayAlert("Success", "Expiereince sucessfully updated", "Great!");
             }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Failure", "Expiereince failed to be updated", "OK");
+            }
+
+            // Update post from Local-DB
+            //using (SQLiteConnection conn = new SQLiteConnection(App.DatabaseLocation))
+            //{
+            //    conn.CreateTable<Post>();
+            //    int rows = conn.Update(selectedPost);
+
+            //    if (rows > 0)
+            //        DisplayAlert("Success", "Expiereince sucessfully updated", "Great!");
+            //    else
+            //        DisplayAlert("Failure", "Expiereince failed to be updated", "OK");
+            //}
         }
 
         private async void DeleteButton_Clicked(object sender, EventArgs e)
@@ -44,7 +62,6 @@ namespace TravelRecordApp
             {
                 await App.MobileService.GetTable<Post>().DeleteAsync(selectedPost);
                 await DisplayAlert("Success", "Expiereince sucessfully deleted", "Great!");
-                await Navigation.PushAsync(new HistoryPage());
             }
             catch (Exception ex)
             {

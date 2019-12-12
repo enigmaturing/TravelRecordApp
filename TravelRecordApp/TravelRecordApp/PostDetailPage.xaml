@@ -8,6 +8,24 @@
 
     <StackLayout>
         <Entry x:Name="expierienceEntry"/>
+        <Label x:Name="venueLabel"
+               Margin="0,30,0,0"
+               FontAttributes="Bold"
+               FontSize="22"
+               Text="MusterVenueName"/>
+        <Label x:Name="categoryLabel"
+               TextColor="DodgerBlue"
+               FontSize="15"
+               Text="MusterVenueCategory" />
+        <Label x:Name="addressLabel"
+               FontSize="15"
+               Text="MusterVenueAddress" />
+        <Label x:Name="coordinatesLabel"
+               FontSize="15"
+               Text="MusterVenueCoordinates" />
+        <Label x:Name="distanceLabel"
+               FontSize="15"
+               Text="MusterVenueDIstance" />
         <Button x:Name="updateButton"
                 Text="Update"
                 Clicked="UpdateButton_Clicked"/>
