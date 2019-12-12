@@ -8,7 +8,7 @@ namespace TravelRecordApp
     public partial class App : Application
     {
         public static string DatabaseLocation = string.Empty;
-        public static MobileServiceClient client = new MobileServiceClient("https://travelrecordappjgm.azurewebsites.net");
+        public static MobileServiceClient MobileService = new MobileServiceClient("https://travelrecordappjgm.azurewebsites.net");
 
         public App()
         {
