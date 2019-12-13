@@ -28,5 +28,13 @@ namespace TravelRecordApp.Model
         public int Distance { get; set; }
 
         public string UserId { get; set; }
+
+        // Implementing MVVM -> Logic where it belongs: in the model.
+        // That is why the functionality of inserting a post in the DB
+        // is changed from NewTravelPage.xaml.cs to the Model Class of the Post
+        public static async void Insert(Post post)
+        {
+            await App.MobileService.GetTable<Post>().InsertAsync(post);
+        }
     }
 }

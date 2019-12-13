@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TravelRecordApp.Logic;
 using TravelRecordApp.Model;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -28,7 +27,7 @@ namespace TravelRecordApp
             // implemented in our class VenueLogic
             var locator = CrossGeolocator.Current;
             var position = await locator.GetPositionAsync();
-            var venues = await VenueLogic.GetVenues(position.Latitude, position.Longitude);
+            var venues = await Venue.GetVenues(position.Latitude, position.Longitude);
             venueListView.ItemsSource = venues;
         }
 
@@ -65,7 +64,7 @@ namespace TravelRecordApp
                 //}
 
                 // Insert the post into the azure db
-                await App.MobileService.GetTable<Post>().InsertAsync(post);
+                Post.Insert(post);  // -> MVVM: The implementation is now in the Model of Post -> await App.MobileService.GetTable<Post>().InsertAsync(post);
                 await DisplayAlert("Success", "Expiereince sucessfully inserted", "Great!");  // This line will only be executed AFTER the previous line is finished, because it is an async-method marked with await
                 await Navigation.PopAsync();
             } 
