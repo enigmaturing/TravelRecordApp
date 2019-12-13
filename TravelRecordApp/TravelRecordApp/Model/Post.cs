@@ -1,7 +1,9 @@
 ﻿using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace TravelRecordApp.Model
 {
@@ -35,6 +37,46 @@ namespace TravelRecordApp.Model
         public static async void Insert(Post post)
         {
             await App.MobileService.GetTable<Post>().InsertAsync(post);
+        }
+
+        public static async Task<List<Post>> Read()
+        {
+            return await App.MobileService.GetTable<Post>().Where(p => p.UserId == App.user.Id).ToListAsync();
+        }
+
+        public static Dictionary<string, int> GetCategories(List<Post> posts)
+        {
+            var categories = posts.OrderBy(p => p.CategoryId).Select(p => p.CategoryName).Distinct().ToList();
+
+
+            // Store in a dictionary called categoriesCountDictionary the count of posts in each category
+            Dictionary<string, int> categoriesCountDictionary = new Dictionary<string, int>();
+            int noCategoryAsignedToThisElement = 0;
+
+            foreach (var category in categories)
+            {
+                // With LINQ, retrieve the count of posts, where the category is a given one (defined by the loop)
+                // 1st LINQ-Syntax:
+                /*
+                var count = (from post in postTable
+                             where post.CategoryName == category
+                             select post).ToList().Count();
+                */
+
+                // 2nd LINQ-Syntax:
+                var count = posts.Where(p => p.CategoryName == category).ToList().Count();
+
+                try
+                {
+                    categoriesCountDictionary.Add(category, count);
+                }
+                catch (NullReferenceException nre) { noCategoryAsignedToThisElement++; }
+                catch (Exception ex) { }
+            }
+
+            categoriesCountDictionary.Add("No classified location", noCategoryAsignedToThisElement);
+
+            return categoriesCountDictionary;
         }
     }
 }

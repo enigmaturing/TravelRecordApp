@@ -27,33 +27,17 @@ namespace TravelRecordApp
 
         private async void loginButton_Clicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(emailEntry.Text) || string.IsNullOrEmpty(passwordEntry.Text))
-            {
-                await DisplayAlert("Alert", "Introduce your email and password, please", "cancel");
-                return;
-            }
-            else
-            {
-                // Look in the azure table "Users" for the user with an email address that matched to the one given by the user in the emailEntry of MainPage.xaml
-                var user = (await App.MobileService.GetTable<Users>().Where(u => u.Email == emailEntry.Text).ToListAsync()).FirstOrDefault();
+            bool canLogin = await Users.Login(emailEntry.Text, passwordEntry.Text);
 
-                if(user != null)
-                {
-                    if (user.Password == passwordEntry.Text)
-                    {
-                        App.user = user;  // Wen the user has been authenticated, asign it to the instance created in App.xaml.cs, so that it can be shared between all ContentViews
-                        await Navigation.PushAsync(new HomePage());
-                    }
-                    else
-                    {
-                        await DisplayAlert("Attention!", "Email or Password are not correct", "OK");
-                    }
-                }
-                else
-                {
-                    await DisplayAlert("Error", "User not found", "OK");
-                }
+            if (canLogin)
+            {
+                await Navigation.PushAsync(new HomePage());
             }
+            else 
+            {
+                await DisplayAlert("Error", "Not able to log-in", "OK");
+            }
+
         }
 
         private async void cancelSubscriptionButton_Clicked(object sender, EventArgs e)

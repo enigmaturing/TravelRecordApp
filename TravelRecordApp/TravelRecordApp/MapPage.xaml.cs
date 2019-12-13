@@ -56,7 +56,7 @@ namespace TravelRecordApp
             */
 
             // SHOW POSTS STORED IN AZURE-DB
-            var posts = await App.MobileService.GetTable<Post>().Where(p => p.UserId == App.user.Id).ToListAsync();
+            var posts = await Post.Read();  // MVVM -> Implementation of read posts is now in Model of Post -> var posts = await App.MobileService.GetTable<Post>().Where(p => p.UserId == App.user.Id).ToListAsync();
             DisplayPinsInMap(posts);
         }
 
